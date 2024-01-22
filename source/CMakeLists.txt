@@ -27,7 +27,7 @@ target_include_directories(dfps PRIVATE ${INCS})
 target_link_libraries(dfps PRIVATE spdlog scn)
 
 set(THIS_COMPILE_FLAGS
-    -Wall -Werror -fdata-sections -ffunction-sections -fno-threadsafe-statics -fno-omit-frame-pointer -fno-rtti
+    -Wall -Werror -fdata-sections -ffunction-sections -fno-threadsafe-statics -fno-omit-frame-pointer -fno-rtti -fomit-frame-pointer -Os -flto -fvisibility=hidden -fshort-enums -fmerge-all-constants -Bsymbolic -fdata-sections -ffunction-sections -fno-stack-protector -falign-functions -finline-functions
     -D_GNU_SOURCE
 )
 
@@ -38,7 +38,7 @@ set(THIS_LINK_FLAGS
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
     target_link_libraries(dfps PRIVATE c++_static dl)
     list(APPEND THIS_COMPILE_FLAGS -O3 -fvisibility=hidden -fvisibility-inlines-hidden -flto)
-    list(APPEND THIS_LINK_FLAGS -static -O3 -fvisibility=hidden -fvisibility-inlines-hidden -flto -Wl,--icf=all,-O3,--lto-O3,--strip-all)
+    list(APPEND THIS_LINK_FLAGS -static-libgcc -static-libstdc++ -L/system/lib64 -lc++ -ldl -lc -lm -O3 -fvisibility=hidden -fvisibility-inlines-hidden -flto -Wl,-O3,--lto-O3,--gc-sections,--as-needed,--icf=all,-z,norelro,--pack-dyn-relocs=android+relr,-x,-s,--strip-all)
 elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
     list(APPEND THIS_COMPILE_FLAGS -fsanitize=address -DSPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_DEBUG)
     list(APPEND THIS_LINK_FLAGS -fsanitize=address)

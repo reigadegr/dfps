@@ -32,8 +32,8 @@ build_targets() {
     mkdir -p $BUILD_DIR/$1
     cmake \
         -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
-        -DCMAKE_C_COMPILER="$TOOLCHAIN_BIN/$1-clang" \
-        -DCMAKE_CXX_COMPILER="$TOOLCHAIN_BIN/$1-clang++" \
+        -DCMAKE_C_COMPILER="/data/data/com.termux/files/usr/bin/aarch64-linux-android-clang" \
+        -DCMAKE_CXX_COMPILER="/data/data/com.termux/files/usr/bin/aarch64-linux-android-clang++" \
         -H$BASEDIR \
         -B$BUILD_DIR/$1 \
         -G "Unix Makefiles"
@@ -136,3 +136,5 @@ do_task() {
 for t in $BUILD_TASKS; do
     do_task $t
 done
+ldd /data/data/com.termux/files/home/dfps/build/aarch64-linux-android23/runnable/dfps
+/data/data/com.termux/files/usr/bin/aarch64-linux-android-strip /data/data/com.termux/files/home/dfps/build/aarch64-linux-android23/runnable/dfps
