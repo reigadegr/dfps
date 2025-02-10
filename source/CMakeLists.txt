@@ -27,7 +27,7 @@ target_include_directories(dfps PRIVATE ${INCS})
 target_link_libraries(dfps PRIVATE spdlog scn)
 
 set(THIS_COMPILE_FLAGS
-    -Wall -Werror -fdata-sections -ffunction-sections -fno-threadsafe-statics -fno-omit-frame-pointer -fno-rtti
+    -Wall -fdata-sections -ffunction-sections -fno-threadsafe-statics -fno-omit-frame-pointer -fno-rtti
     -D_GNU_SOURCE
 )
 
