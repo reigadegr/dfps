@@ -164,7 +164,7 @@ void DynamicFps::SetTunable(const std::string &tunable, const std::string &value
 std::string DynamicFps::FindInvalidRule(void) {
     auto isDefaultRule = [](const FpsRule &rule) { return rule.idle == -1 && rule.active == -1; };
     auto isSfBackdoorRule = [](const FpsRule &rule) { return rule.idle < 20 && rule.active < 20; };
-    auto isInvalid = [=](const FpsRule &rule) {
+    auto isInvalid = [=, this](const FpsRule &rule) {
         return isDefaultRule(rule) == false && useSfBackdoor_ != isSfBackdoorRule(rule);
     };
 
@@ -227,7 +227,7 @@ void DynamicFps::OnInput(void) {
         SwitchRefreshRate();
         DwSetWork(dwInput_, nullptr, DelayedWorker::SLEEP_TS);
     } else {
-        auto enterIdle = [=]() {
+        auto enterIdle = [=, this]() {
             active_ = false;
             SwitchRefreshRate();
         };
@@ -242,7 +242,7 @@ void DynamicFps::OnInputScene(const void *data) {
         SwitchRefreshRate();
         DwSetWork(dwGesture_, nullptr, DelayedWorker::SLEEP_TS);
     } else {
-        auto resume = [=]() {
+        auto resume = [=, this]() {
             if (overridedApp_ == UNIVERSIAL_PKG_NAME) {
                 overridedApp_ = "";
                 SwitchRefreshRate();
@@ -271,7 +271,7 @@ void DynamicFps::OnOffscreen(const void *data) {
         overridedApp_ = OFFSCREEN_PKG_NAME;
         SwitchRefreshRate(true);
     } else {
-        auto exitOffscreen = [=]() {
+        auto exitOffscreen = [=, this]() {
             if (overridedApp_ == OFFSCREEN_PKG_NAME) {
                 overridedApp_ = "";
                 SwitchRefreshRate(true);
